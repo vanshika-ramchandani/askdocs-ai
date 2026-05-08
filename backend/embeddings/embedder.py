@@ -11,46 +11,45 @@ class EmbeddingGenerator:
 
     def __init__(self):
 
-        self.api_key = os.getenv("JINA_API_KEY")
+        self.api_key = os.getenv("HF_TOKEN")
 
-        self.url = "https://api.jina.ai/v1/embeddings"
+        self.url = (
+            "https://api-inference.huggingface.co/"
+            "pipeline/feature-extraction/"
+            "sentence-transformers/all-MiniLM-L6-v2"
+        )
 
 
     def generate_embeddings(self, texts):
 
         headers = {
-            "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}"
         }
 
-        payload = {
-            "model": "jina-embeddings-v2-base-en",
-            "input": texts
-        }
+        embeddings = []
 
-        response = requests.post(
-            self.url,
-            headers=headers,
-            json=payload
-        )
+        for text in texts:
 
-        print("STATUS CODE:", response.status_code)
-
-        print("RAW RESPONSE:")
-        print(response.text)
-
-        data = response.json()
-
-        if "data" not in data:
-
-            raise Exception(
-                f"Embedding API Error: {data}"
+            response = requests.post(
+                self.url,
+                headers=headers,
+                json={
+                    "inputs": text
+                }
             )
 
-        embeddings = [
-            item["embedding"]
-            for item in data["data"]
-        ]
+            data = response.json()
+
+            if isinstance(data, dict) and "error" in data:
+
+                raise Exception(data["error"])
+
+            embedding = np.mean(
+                data,
+                axis=0
+            )
+
+            embeddings.append(embedding)
 
         return np.array(
             embeddings,
