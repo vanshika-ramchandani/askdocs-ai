@@ -23,26 +23,34 @@ class EmbeddingGenerator:
             "Authorization": f"Bearer {self.api_key}"
         }
 
-        embeddings = []
+        payload = {
+            "model": "jina-embeddings-v2-base-en",
+            "input": texts
+        }
 
-        for text in texts:
+        response = requests.post(
+            self.url,
+            headers=headers,
+            json=payload
+        )
 
-            payload = {
-                "model": "jina-embeddings-v2-base-en",
-                "input": [text]
-            }
+        print("STATUS CODE:", response.status_code)
 
-            response = requests.post(
-                self.url,
-                headers=headers,
-                json=payload
+        print("RAW RESPONSE:")
+        print(response.text)
+
+        data = response.json()
+
+        if "data" not in data:
+
+            raise Exception(
+                f"Embedding API Error: {data}"
             )
 
-            data = response.json()
-
-            embedding = data["data"][0]["embedding"]
-
-            embeddings.append(embedding)
+        embeddings = [
+            item["embedding"]
+            for item in data["data"]
+        ]
 
         return np.array(
             embeddings,
