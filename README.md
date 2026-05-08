@@ -17,7 +17,6 @@ The system crawls documentation pages, generates embeddings, stores them in a FA
 - AI-powered grounded responses
 - FastAPI backend
 - Streamlit frontend
-- Multi-documentation support
 
 ---
 
@@ -26,12 +25,17 @@ The system crawls documentation pages, generates embeddings, stores them in a FA
 ## Backend
 - Python
 - FastAPI
+- BeautifulSoup
 - FAISS
 - Sentence Transformers
 - Groq API
 
 ## Frontend
 - Streamlit
+
+## Web Crawling
+- Requests
+- BeautifulSoup
 
 ## AI / RAG
 - Semantic Retrieval
@@ -115,7 +119,7 @@ GROQ_API_KEY=your_api_key_here
 # ▶️ Run Backend
 
 ```bash
-uvicorn backend.main:app --reload --port 8001
+uvicorn backend.main:app --reload --port 8002
 ```
 
 ---
