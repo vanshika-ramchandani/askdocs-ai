@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+requests
+beautifulsoup4
+lxml
+python-dotenv
+sentence-transformers
+faiss-cpu
+langchain
+numpy
+google-generativeai
+groq
