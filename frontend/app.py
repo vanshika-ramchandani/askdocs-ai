@@ -1,10 +1,19 @@
 import streamlit as st
 import requests
 import time
+
 from urllib.parse import urlparse
 
+
+# ------------------------------------------------
+# Backend URL
+# ------------------------------------------------
 BACKEND_URL = "https://askdocs-ai-5hgg.onrender.com"
 
+
+# ------------------------------------------------
+# URL Validation
+# ------------------------------------------------
 def is_valid_url(url):
 
     try:
@@ -19,7 +28,11 @@ def is_valid_url(url):
     except:
 
         return False
-    
+
+
+# ------------------------------------------------
+# Page Config
+# ------------------------------------------------
 st.set_page_config(
     page_title="AskDocs AI",
     page_icon="🤖",
@@ -27,42 +40,45 @@ st.set_page_config(
 )
 
 
-# -----------------------------
+# ------------------------------------------------
 # Session State
-# -----------------------------
+# ------------------------------------------------
 if "docs_loaded" not in st.session_state:
     st.session_state.docs_loaded = False
 
 if "current_docs" not in st.session_state:
     st.session_state.current_docs = ""
 
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
-# -----------------------------
+
+# ------------------------------------------------
 # Header
-# -----------------------------
+# ------------------------------------------------
 st.title("🤖 AskDocs AI")
 
 st.markdown(
     """
 Chat with any documentation website using AI.
 
-Upload a docs website → ask technical questions.
+Upload a documentation website and ask technical questions in natural language.
 """
 )
 
 st.divider()
 
 
-# -----------------------------
+# ------------------------------------------------
 # Sidebar
-# -----------------------------
+# ------------------------------------------------
 with st.sidebar:
 
     st.header("Documentation Setup")
 
     docs_url = st.text_input(
         "Documentation URL",
-        placeholder="Enter a URL"
+        placeholder="https://react.dev/"
     )
 
     process_button = st.button(
@@ -80,10 +96,19 @@ with st.sidebar:
             f"Current Docs: {st.session_state.current_docs}"
         )
 
+        if st.button(
+            "Clear Chat History",
+            use_container_width=True
+        ):
 
-# -----------------------------
+            st.session_state.chat_history = []
+
+            st.toast("🗑️ Chat history cleared")
+
+
+# ------------------------------------------------
 # Process Documentation
-# -----------------------------
+# ------------------------------------------------
 if process_button:
 
     if not docs_url:
@@ -108,7 +133,7 @@ if process_button:
 
             # Step 1
             status.info(
-                "🔍 Validating documentation URL..."
+                "🔍 Checking documentation website..."
             )
 
             progress_bar.progress(10)
@@ -159,6 +184,8 @@ if process_button:
 
                 st.session_state.current_docs = docs_url
 
+                st.session_state.chat_history = []
+
                 st.toast(
                     "🚀 AskDocs AI is ready!"
                 )
@@ -172,21 +199,38 @@ if process_button:
             st.error(str(e))
 
 
-# -----------------------------
-# Chat Interface
-# -----------------------------
+# ------------------------------------------------
+# Chat Section
+# ------------------------------------------------
 st.subheader("Ask Questions")
 
-query = st.text_input(
-    "Ask anything about the documentation...",
-    placeholder="Enter a question"
+
+# ------------------------------------------------
+# Display Previous Chats
+# ------------------------------------------------
+for chat in st.session_state.chat_history:
+
+    with st.chat_message("user"):
+
+        st.markdown(chat["question"])
+
+    with st.chat_message("assistant"):
+
+        st.markdown(chat["answer"])
+
+
+# ------------------------------------------------
+# Chat Input
+# ------------------------------------------------
+query = st.chat_input(
+    "Ask a documentation question..."
 )
 
 
-if st.button(
-    "Ask",
-    use_container_width=True
-):
+# ------------------------------------------------
+# Handle Query
+# ------------------------------------------------
+if query:
 
     if not st.session_state.docs_loaded:
 
@@ -194,19 +238,18 @@ if st.button(
             "Please process documentation first"
         )
 
-    elif not query:
-
-        st.warning(
-            "Please enter a question"
-        )
-
     else:
+
+        # Show User Message
+        with st.chat_message("user"):
+
+            st.markdown(query)
 
         thinking = st.empty()
 
         try:
 
-            # Simulated thinking states
+            # Thinking states
             thinking.info(
                 "🔎 Searching relevant documentation..."
             )
@@ -225,7 +268,10 @@ if st.button(
 
             response = requests.post(
                 f"{BACKEND_URL}/ask",
-                json={"query": query}
+                json={
+                    "query": query,
+                    "chat_history": st.session_state.chat_history[-3:]
+                }
             )
 
             data = response.json()
@@ -234,9 +280,20 @@ if st.button(
 
             if "answer" in data:
 
-                st.subheader("Answer")
+                answer = data["answer"]
 
-                st.markdown(data["answer"])
+                # Show Assistant Message
+                with st.chat_message("assistant"):
+
+                    st.markdown(answer)
+
+                # Save Chat History
+                st.session_state.chat_history.append(
+                    {
+                        "question": query,
+                        "answer": answer
+                    }
+                )
 
             else:
 

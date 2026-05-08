@@ -58,7 +58,7 @@ def process_docs(request: URLRequest):
 
         links = crawler.get_all_links()
 
-        links = links[:25]
+        links = links[:15]
 
         for link in links:
 
@@ -99,7 +99,7 @@ def process_docs(request: URLRequest):
 
                 chunks = chunker.create_chunks(
                     formatted_text,
-                    chunk_size=800
+                    chunk_size=1200
                 )
 
                 all_chunks.extend(chunks)

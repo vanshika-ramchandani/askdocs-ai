@@ -38,7 +38,7 @@ class DocumentChunker:
         return formatted_text
 
 
-    def create_chunks(self, text, chunk_size=800):
+    def create_chunks(self, text, chunk_size=1200):
 
         paragraphs = text.split("\n\n")
 
