@@ -3,6 +3,8 @@ import requests
 import time
 from urllib.parse import urlparse
 
+BACKEND_URL = "https://askdocs-ai-5hgg.onrender.com"
+
 def is_valid_url(url):
 
     try:
@@ -130,7 +132,7 @@ if process_button:
             progress_bar.progress(65)
 
             response = requests.post(
-                "http://127.0.0.1:8002/process-docs",
+                f"{BACKEND_URL}/process-docs",
                 json={"url": docs_url}
             )
 
@@ -222,7 +224,7 @@ if st.button(
             )
 
             response = requests.post(
-                "http://127.0.0.1:8002/ask",
+                f"{BACKEND_URL}/ask",
                 json={"query": query}
             )
 
