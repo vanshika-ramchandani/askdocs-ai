@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 # ------------------------------------------------
 # Backend URL
 # ------------------------------------------------
-BACKEND_URL = "http://127.0.0.1:8002"
+BACKEND_URL = "https://askdocs-ai-production.up.railway.app"
 
 
 # ------------------------------------------------
@@ -78,7 +78,7 @@ with st.sidebar:
 
     docs_url = st.text_input(
         "Documentation URL",
-        placeholder="https://react.dev/"
+        placeholder="Enter docs URL"
     )
 
     process_button = st.button(
