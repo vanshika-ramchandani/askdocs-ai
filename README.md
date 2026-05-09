@@ -116,7 +116,8 @@ pip install -r requirements.txt
 Create a `.env` file:
 
 ```env
-GROQ_API_KEY=your_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
+HF_TOKEN=your_hugging_face_token_here
 ```
 
 ---
@@ -166,7 +167,9 @@ streamlit run frontend/app.py
 
 #  📸 Screenshots
 <img width="1918" height="866" alt="Screenshot 2026-05-09 165120" src="https://github.com/user-attachments/assets/1c21a588-a038-4ab0-b7f6-1c4da58f38c1" />
+
 <img width="1917" height="867" alt="Screenshot 2026-05-09 165149" src="https://github.com/user-attachments/assets/3ea9c2c1-af77-4b7d-bf4b-60007eaebcd4" />
+
 <img width="1911" height="861" alt="Screenshot 2026-05-09 165142" src="https://github.com/user-attachments/assets/11c8f034-faa1-4856-b4ad-de0aac309852" />
 
 
