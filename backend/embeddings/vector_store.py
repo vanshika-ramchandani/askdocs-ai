@@ -5,7 +5,7 @@ import os
 
 class FAISSVectorStore:
 
-    def __init__(self, dimension=384):
+    def __init__(self, dimension=1024):
         self.dimension = dimension
         self.index = faiss.IndexFlatL2(dimension)
         self.documents = []

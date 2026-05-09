@@ -9,7 +9,7 @@ class SemanticRetriever:
 
     def search(self, query, top_k=5):
 
-        query_embedding = self.embedder.model.encode([query])
+        query_embedding = self.embedder.generate_embeddings([query])
         query_embedding = np.array(query_embedding).astype("float32")
 
         distances, indices = self.vector_store.index.search(

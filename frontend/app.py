@@ -130,73 +130,49 @@ if process_button:
         status = st.empty()
 
         try:
-
-            # Step 1
-            status.info(
-                "🔍 Checking documentation website..."
-            )
-
+            status.info("🔍 Checking documentation website...")
             progress_bar.progress(10)
-
             time.sleep(0.5)
 
-            # Step 2
-            status.info(
-                "📚 Reading documentation pages..."
-            )
-
+            status.info("📚 Reading documentation pages...")
             progress_bar.progress(35)
-
             time.sleep(0.5)
 
-            # Step 3
-            status.info(
-                "🧠 Understanding documentation structure..."
-            )
+            # ✅ Show step 3 BEFORE making the blocking request
+            status.info("🧠 Crawling & embedding documentation (this may take a minute)...")
+            progress_bar.progress(60)
 
-            progress_bar.progress(65)
-
+            # This blocks until crawling + embedding is done
             response = requests.post(
                 f"{BACKEND_URL}/process-docs",
-                json={"url": docs_url}
+                json={"url": docs_url},
+                timeout=400  # ✅ Add timeout — default is None which can hang forever
             )
 
             data = response.json()
 
-            # Step 4
-            status.info(
-                "⚡ Preparing AI search system..."
-            )
+            print(data)
 
+            status.info("⚡ Preparing AI search system...")
             progress_bar.progress(90)
-
             time.sleep(0.5)
 
             if data["status"] == "success":
-
                 progress_bar.progress(100)
-
-                status.success(
-                    "✅ Documentation processed successfully"
-                )
-
+                status.success("✅ Documentation processed successfully")
                 st.session_state.docs_loaded = True
-
                 st.session_state.current_docs = docs_url
-
                 st.session_state.chat_history = []
-
-                st.toast(
-                    "🚀 AskDocs AI is ready!"
-                )
-
+                st.toast("🚀 AskDocs AI is ready!")
             else:
+                st.error(data.get("message", "Unknown error from backend"))
 
-                st.error(data["message"])
-
+        except requests.exceptions.Timeout:
+            st.error("⏱️ Request timed out — the documentation site may be too large or slow to crawl.")
+        except requests.exceptions.ConnectionError:
+            st.error("🔌 Could not connect to backend. Is it running?")
         except Exception as e:
-
-            st.error(str(e))
+            st.error(f"Unexpected error: {str(e)}")
 
 
 # ------------------------------------------------

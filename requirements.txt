@@ -11,3 +11,4 @@ numpy
 google-generativeai
 groq
 huggingface_hub
+google-genai

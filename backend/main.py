@@ -58,8 +58,6 @@ def process_docs(request: URLRequest):
 
         links = crawler.get_all_links()
 
-        links = links[:15]
-
         for link in links:
 
             data = parser.extract_content(link)
@@ -99,7 +97,7 @@ def process_docs(request: URLRequest):
 
                 chunks = chunker.create_chunks(
                     formatted_text,
-                    chunk_size=1200
+                    chunk_size=3000
                 )
 
                 all_chunks.extend(chunks)
@@ -152,4 +150,3 @@ def ask_question(request: QueryRequest):
         return {
             "error": str(e)
         }
-
