@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 # ------------------------------------------------
 # Backend URL
 # ------------------------------------------------
-BACKEND_URL = "https://askdocs-ai-production.up.railway.app/"
+BACKEND_URL = "http://127.0.0.1:8002"
 
 
 # ------------------------------------------------
