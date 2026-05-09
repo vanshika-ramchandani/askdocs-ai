@@ -1,3 +1,8 @@
+# 🚀 Live Demo
+https://vanshika-ramchandani-askdocs-ai-frontendapp-ekjrku.streamlit.app/
+
+---
+
 # 🤖 AskDocs AI
 
 AskDocs AI is a production-style Retrieval-Augmented Generation (RAG) application that allows users to chat with documentation websites using AI.
@@ -156,6 +161,14 @@ streamlit run frontend/app.py
 - Streaming Responses
 - Browser Automation Crawling
 - Conversation Memory
+
+---
+
+#  📸 Screenshots
+<img width="1918" height="866" alt="Screenshot 2026-05-09 165120" src="https://github.com/user-attachments/assets/1c21a588-a038-4ab0-b7f6-1c4da58f38c1" />
+<img width="1917" height="867" alt="Screenshot 2026-05-09 165149" src="https://github.com/user-attachments/assets/3ea9c2c1-af77-4b7d-bf4b-60007eaebcd4" />
+<img width="1911" height="861" alt="Screenshot 2026-05-09 165142" src="https://github.com/user-attachments/assets/11c8f034-faa1-4856-b4ad-de0aac309852" />
+
 
 ---
 
