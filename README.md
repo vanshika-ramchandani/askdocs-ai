@@ -77,7 +77,7 @@ askdocs_ai/
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/askdocs-ai.git
+git clone https://github.com/vanshika-ramchandani/askdocs-ai.git
 cd askdocs-ai
 ```
 
