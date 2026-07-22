@@ -1,7 +1,8 @@
 name: keep-apps-awake
 
 # Pings the frontend (Streamlit, sleeps after ~12h idle) and backend
-# (HF Space, sleeps after ~48h idle) so neither goes to sleep.
+# (Render free web service, sleeps after ~15min idle - this cadence
+# only reduces how often you hit a cold start, it can't prevent one).
 # Also runnable on demand from the Actions tab.
 
 on:
@@ -18,7 +19,7 @@ jobs:
           - name: frontend
             url: https://vanshika-ramchandani-askdocs-ai-frontendapp-ekjrku.streamlit.app/
           - name: backend
-            url: https://vanshika-ramchandani-askdocs-ai-backend.hf.space/
+            url: https://askdocs-ai-5hgg.onrender.com/
     steps:
       - name: Ping ${{ matrix.target.name }}
         run: |

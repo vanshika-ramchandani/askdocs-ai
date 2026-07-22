@@ -8,7 +8,7 @@ from urllib.parse import urlparse
 # ------------------------------------------------
 # Backend URL
 # ------------------------------------------------
-BACKEND_URL = "https://vanshika-ramchandani-askdocs-ai-backend.hf.space"
+BACKEND_URL = "https://askdocs-ai-5hgg.onrender.com"
 
 
 # ------------------------------------------------
