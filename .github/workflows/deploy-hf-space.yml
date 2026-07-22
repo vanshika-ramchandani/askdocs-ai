@@ -1,0 +1,30 @@
+name: deploy-hf-space
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "requirements.txt"
+      - "Dockerfile"
+      - "space/README.md"
+      - ".github/workflows/deploy-hf-space.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - run: pip install huggingface_hub
+
+      - name: Deploy to HF Space
+        env:
+          HF_DEPLOY_TOKEN: ${{ secrets.HF_DEPLOY_TOKEN }}
+          HF_SPACE_ID: vanshika-ramchandani/askdocs-ai-backend
+        run: python scripts/deploy_to_hf_space.py

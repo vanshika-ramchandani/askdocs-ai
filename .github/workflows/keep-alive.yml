@@ -1,0 +1,32 @@
+name: keep-apps-awake
+
+# Pings the frontend (Streamlit, sleeps after ~12h idle) and backend
+# (HF Space, sleeps after ~48h idle) so neither goes to sleep.
+# Also runnable on demand from the Actions tab.
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours (UTC)
+  workflow_dispatch:        # manual run button
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - name: frontend
+            url: https://vanshika-ramchandani-askdocs-ai-frontendapp-ekjrku.streamlit.app/
+          - name: backend
+            url: https://vanshika-ramchandani-askdocs-ai-backend.hf.space/
+    steps:
+      - name: Ping ${{ matrix.target.name }}
+        run: |
+          URL="${{ matrix.target.url }}"
+          for i in 1 2 3 4; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -L --max-time 90 "$URL" || echo "000")
+            echo "attempt $i -> HTTP $code"
+            if [ "$code" = "200" ]; then echo "App is awake."; exit 0; fi
+            sleep 30
+          done
+          echo "App did not return 200 yet (likely cold-starting) - pinged anyway."
